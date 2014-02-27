@@ -1,0 +1,84 @@
+<body>
+<head>
+<title> nubby demo </title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<div id="nubby" style="position: fixed; top: 5px; right: 5px;"  >
+hi
+</div>
+
+<div id="output"></div>
+
+
+<img src="art.jpg">
+
+
+
+<script type="text/javascript">
+$('#nubby').html('<img src="nubbs.png">') // position absolute upper left corner
+
+function init() {
+    var btn = document.getElementById("nubby");
+    btn.addEventListener("mousedown", mouseDown, false);
+    btn.addEventListener("mouseup", mouseUp, false);
+}
+
+var initX, initY, timeoutId;
+var stop = false;
+function mouseDown(e) {
+    // save initial xy
+    initX = e.clientX;
+    initY = e.clientY;
+curX = e.clientX;
+curY = e.clientY;
+stop = false; 
+    e.target.setCapture();
+    e.target.addEventListener("mousemove", mouseMoved, false);
+// var timeoutID = window.setTimeout(func, delay, [param1, param2, ...]);
+
+   function scroller(){
+    // dx dy
+       window.scrollBy( curX - initX, curY - initY);
+       stop ? null : window.setTimeout(scroller, 50);
+   }
+   window.setTimeout(scroller, 20);
+}
+
+function mouseUp(e) {
+    e.target.removeEventListener("mousemove", mouseMoved, false);
+    stop = true;
+}
+
+var curX;
+var curY;
+
+function mouseMoved(e) {
+    curX = e.clientX;
+    curY = e.clientY;
+
+    var output = document.getElementById("output"); /// if element "nubby-debug"
+    output.innerHTML = "Position: " + e.clientX + ", " + e.clientY;
+}
+
+
+
+(function( $ ) {
+    $.fn.nubify = function() {
+	return this.filter("nubby" ).append(function() {
+	    // make circle target
+	    var nub = this.html('<img src="nubby.png">');
+	    // capture mouse events
+	    
+	    // send mouse events to supplied function
+	    return nub;
+	});
+    };
+}( jQuery ));
+
+
+    init();
+</script>
+</body>
+
+

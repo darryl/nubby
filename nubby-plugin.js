@@ -9,9 +9,8 @@
 
       // capture mouse events
       function init() {
-        var btn = document.getElementById("nubby");
-        btn.addEventListener("mousedown", mouseDown, false);
-        btn.addEventListener("mouseup", mouseUp, false);
+        this.addEventListener("mousedown", mouseDown, false);
+        this.addEventListener("mouseup", mouseUp, false);
       }
 
       function mouseDown(e) {
@@ -48,7 +47,7 @@
 
       init(); // set listeners
 
-      return nub;
+      return nub; /// nope
  
 //   }); // end append( ...
   }; // end $.fn.nubbify = ...

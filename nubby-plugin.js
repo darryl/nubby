@@ -1,12 +1,13 @@
+;
 (function( $ ) {
   $.fn.nubify = function() {
-    // return this.html(function() {
-    // make circle target
+
     var nub = this.html('<img src="nubby.png">');
-    var initX, initY, timeoutId;
+    var initX, initY;
     var stop = false; // time to stop scrolling?
     var curX, curY;
     var output = document.getElementById("nubby-debug");
+    var scrollSpeed = 50;
 
     // capture mouse events
     function init() {
@@ -23,14 +24,13 @@
       stop = false; 
       e.target.setCapture();
       e.target.addEventListener("mousemove", mouseMoved, false);
-      // var timeoutID = window.setTimeout(func, delay, [param1, param2, ...]);
 
       function scroller(){
         // dx dy
         window.scrollBy( curX - initX, curY - initY);
-        stop ? null : window.setTimeout(scroller, 50);
+        stop ? null : window.setTimeout(scroller, scrollSpeed);
       }
-      window.setTimeout(scroller, 20);
+      window.setTimeout(scroller, scrollSpeed);
     }
 
     function mouseUp(e) {
@@ -43,12 +43,12 @@
       curY = e.clientY;
 
       if (output !== null)
-                output.innerHTML = "Position: " + e.clientX + ", " + e.clientY;
+        output.innerHTML = "Position: " + e.clientX + ", " + e.clientY;
     }
 
     init(); // set listeners
 
     return nub;
 
-  }; // end $.fn.nubbify = ...
+  };
 }( jQuery ));

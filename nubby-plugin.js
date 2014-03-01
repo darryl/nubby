@@ -1,54 +1,54 @@
 (function( $ ) {
   $.fn.nubify = function() {
     // return this.html(function() {
-      // make circle target
-      var nub = this.html('<img src="nubby.png">');
-      var initX, initY, timeoutId;
-      var stop = false; // time to stop scrolling?
-      var curX, curY;
+    // make circle target
+    var nub = this.html('<img src="nubby.png">');
+    var initX, initY, timeoutId;
+    var stop = false; // time to stop scrolling?
+    var curX, curY;
+    var output = document.getElementById("nubby-debug");
 
-      // capture mouse events
-      function init() {
-        this.addEventListener("mousedown", mouseDown, false);
-        this.addEventListener("mouseup", mouseUp, false);
+    // capture mouse events
+    function init() {
+      this.addEventListener("mousedown", mouseDown, false);
+      this.addEventListener("mouseup", mouseUp, false);
+    }
+
+    function mouseDown(e) {
+      // save initial xy
+      initX = e.clientX;
+      initY = e.clientY;
+      curX = e.clientX;
+      curY = e.clientY;
+      stop = false; 
+      e.target.setCapture();
+      e.target.addEventListener("mousemove", mouseMoved, false);
+      // var timeoutID = window.setTimeout(func, delay, [param1, param2, ...]);
+
+      function scroller(){
+        // dx dy
+        window.scrollBy( curX - initX, curY - initY);
+        stop ? null : window.setTimeout(scroller, 50);
       }
+      window.setTimeout(scroller, 20);
+    }
 
-      function mouseDown(e) {
-        // save initial xy
-        initX = e.clientX;
-        initY = e.clientY;
-        curX = e.clientX;
-        curY = e.clientY;
-        stop = false; 
-        e.target.setCapture();
-        e.target.addEventListener("mousemove", mouseMoved, false);
-        // var timeoutID = window.setTimeout(func, delay, [param1, param2, ...]);
+    function mouseUp(e) {
+      e.target.removeEventListener("mousemove", mouseMoved, false);
+      stop = true;
+    }
 
-        function scroller(){
-          // dx dy
-          window.scrollBy( curX - initX, curY - initY);
-          stop ? null : window.setTimeout(scroller, 50);
-        }
-        window.setTimeout(scroller, 20);
-      }
+    function mouseMoved(e) {
+      curX = e.clientX;
+      curY = e.clientY;
 
-      function mouseUp(e) {
-        e.target.removeEventListener("mousemove", mouseMoved, false);
-        stop = true;
-      }
+      if (output !== null)
+                output.innerHTML = "Position: " + e.clientX + ", " + e.clientY;
+    }
 
-      function mouseMoved(e) {
-        curX = e.clientX;
-        curY = e.clientY;
+    init(); // set listeners
 
-        var output = document.getElementById("nubby-debug"); /// if element "nubby-debug"
-        output.innerHTML = "Position: " + e.clientX + ", " + e.clientY;
-      }
+    return nub;
 
-      init(); // set listeners
-
-      return nub; /// nope
- 
-//   }); // end append( ...
   }; // end $.fn.nubbify = ...
 }( jQuery ));
